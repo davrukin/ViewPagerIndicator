@@ -1,21 +1,13 @@
 #Android generated
 bin
 gen
-
-#Eclipse
-.project
-.classpath
-.settings
+.gradle/
+build/
 
 #IntelliJ IDEA
 .idea
 *.iml
 classes
-
-#Maven
-target
-release.properties
-pom.xml.*
 
 #Command line
 local.properties
