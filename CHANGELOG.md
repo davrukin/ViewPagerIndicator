@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 3.0.0 *(2017-12-13)*
+----------------------------
+
+ * Updated build system to gradle.
+ * Updated compileSdk (26), minSdk (14), support-v4 (26.1.0)
+
 Version 2.4.1 *(2012-09-11)*
 ----------------------------
 
