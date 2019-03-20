@@ -23,19 +23,20 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewConfigurationCompat;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
+import androidx.core.view.MotionEventCompat;
+import androidx.core.view.ViewConfigurationCompat;
+import androidx.viewpager.widget.ViewPager;
+
 /**
  * Draws a line for each page. The current page line is colored differently
  * than the unselected page lines.
  */
-public class UnderlinePageIndicator extends View implements PageIndicator {
+public abstract class UnderlinePageIndicator extends View implements PageIndicator {
     private static final int INVALID_POINTER = -1;
     private static final int FADE_FRAME_MS = 30;
 
