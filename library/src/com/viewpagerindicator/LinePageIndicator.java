@@ -29,7 +29,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import androidx.core.view.MotionEventCompat;
-import androidx.core.view.ViewConfigurationCompat;
 import androidx.viewpager.widget.ViewPager;
 
 /**
@@ -88,13 +87,13 @@ public class LinePageIndicator extends View implements PageIndicator {
 
         Drawable background = a.getDrawable(R.styleable.LinePageIndicator_android_background);
         if (background != null) {
-          setBackgroundDrawable(background);
+          setBackground(background);
         }
 
         a.recycle();
 
         final ViewConfiguration configuration = ViewConfiguration.get(context);
-        mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
+        mTouchSlop = configuration.getScaledPagingTouchSlop();
     }
 
 
@@ -201,13 +200,13 @@ public class LinePageIndicator extends View implements PageIndicator {
         final int action = ev.getAction() & MotionEventCompat.ACTION_MASK;
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                mActivePointerId = ev.getPointerId(0);
                 mLastMotionX = ev.getX();
                 break;
 
             case MotionEvent.ACTION_MOVE: {
-                final int activePointerIndex = MotionEventCompat.findPointerIndex(ev, mActivePointerId);
-                final float x = MotionEventCompat.getX(ev, activePointerIndex);
+                final int activePointerIndex = ev.findPointerIndex(mActivePointerId);
+                final float x = ev.getX(activePointerIndex);
                 final float deltaX = x - mLastMotionX;
 
                 if (!mIsDragging) {
@@ -253,20 +252,20 @@ public class LinePageIndicator extends View implements PageIndicator {
                 break;
 
             case MotionEventCompat.ACTION_POINTER_DOWN: {
-                final int index = MotionEventCompat.getActionIndex(ev);
-                mLastMotionX = MotionEventCompat.getX(ev, index);
-                mActivePointerId = MotionEventCompat.getPointerId(ev, index);
+                final int index = ev.getActionIndex();
+                mLastMotionX = ev.getX(index);
+                mActivePointerId = ev.getPointerId(index);
                 break;
             }
 
             case MotionEventCompat.ACTION_POINTER_UP:
-                final int pointerIndex = MotionEventCompat.getActionIndex(ev);
-                final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
+                final int pointerIndex = ev.getActionIndex();
+                final int pointerId = ev.getPointerId(pointerIndex);
                 if (pointerId == mActivePointerId) {
                     final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
-                    mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
+                    mActivePointerId = ev.getPointerId(newPointerIndex);
                 }
-                mLastMotionX = MotionEventCompat.getX(ev, MotionEventCompat.findPointerIndex(ev, mActivePointerId));
+                mLastMotionX = ev.getX(ev.findPointerIndex(mActivePointerId));
                 break;
         }
 
@@ -280,13 +279,13 @@ public class LinePageIndicator extends View implements PageIndicator {
         }
         if (mViewPager != null) {
             //Clear us from the old pager.
-            mViewPager.setOnPageChangeListener(null);
+            mViewPager.addOnPageChangeListener(null);
         }
         if (viewPager.getAdapter() == null) {
             throw new IllegalStateException("ViewPager does not have adapter instance.");
         }
         mViewPager = viewPager;
-        mViewPager.setOnPageChangeListener(this);
+        mViewPager.addOnPageChangeListener(this);
         invalidate();
     }
 

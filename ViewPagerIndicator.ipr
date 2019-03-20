@@ -32,6 +32,20 @@
     </profile>
     <version value="1.0" />
   </component>
+  <component name="ProjectDictionaryState">
+    <dictionary name="davrukin">
+      <words>
+        <w>akerfeldt</w>
+        <w>antialiased</w>
+        <w>fedorov</w>
+        <w>figueiredo</w>
+        <w>jitpack</w>
+        <w>patrik</w>
+        <w>viewpagerindicator</w>
+        <w>åkerfeldt</w>
+      </words>
+    </dictionary>
+  </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ViewPagerIndicator.iml" filepath="$PROJECT_DIR$/ViewPagerIndicator.iml" />

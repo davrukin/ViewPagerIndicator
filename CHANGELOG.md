@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 4.0.0 *(2019-03-20)*
+----------------------------
+ * Upgraded SDK levels and migrated to AndroidX
+ * Performed lint check
+
 Version 3.0.0 *(2017-12-13)*
 ----------------------------
 

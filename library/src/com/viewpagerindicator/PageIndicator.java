@@ -27,15 +27,15 @@ public interface PageIndicator extends ViewPager.OnPageChangeListener {
     /**
      * Bind the indicator to a ViewPager.
      *
-     * @param view
+     * @param view the view pager
      */
     void setViewPager(ViewPager view);
 
     /**
      * Bind the indicator to a ViewPager.
      *
-     * @param view
-     * @param initialPosition
+     * @param view the view pager
+     * @param initialPosition the initial position
      */
     void setViewPager(ViewPager view, int initialPosition);
 
@@ -45,14 +45,14 @@ public interface PageIndicator extends ViewPager.OnPageChangeListener {
      * <p>This <strong>must</strong> be used if you need to set the page before
      * the views are drawn on screen (e.g., default start page).</p>
      *
-     * @param item
+     * @param item the item
      */
     void setCurrentItem(int item);
 
     /**
      * Set a page change listener which will receive forwarded events.
      *
-     * @param listener
+     * @param listener the listener
      */
     void setOnPageChangeListener(ViewPager.OnPageChangeListener listener);
 

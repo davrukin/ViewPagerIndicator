@@ -34,7 +34,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import androidx.core.view.MotionEventCompat;
-import androidx.core.view.ViewConfigurationCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
@@ -82,7 +81,7 @@ public class TitlePageIndicator extends View implements PageIndicator {
 
         public final int value;
 
-        private IndicatorStyle(int value) {
+        IndicatorStyle(int value) {
             this.value = value;
         }
 
@@ -101,7 +100,7 @@ public class TitlePageIndicator extends View implements PageIndicator {
 
         public final int value;
 
-        private LinePosition(int value) {
+        LinePosition(int value) {
             this.value = value;
         }
 
@@ -207,13 +206,13 @@ public class TitlePageIndicator extends View implements PageIndicator {
 
         Drawable background = a.getDrawable(R.styleable.TitlePageIndicator_android_background);
         if (background != null) {
-          setBackgroundDrawable(background);
+          setBackground(background);
         }
 
         a.recycle();
 
         final ViewConfiguration configuration = ViewConfiguration.get(context);
-        mTouchSlop = ViewConfigurationCompat.getScaledPagingTouchSlop(configuration);
+        mTouchSlop = configuration.getScaledPagingTouchSlop();
     }
 
 
@@ -553,13 +552,13 @@ public class TitlePageIndicator extends View implements PageIndicator {
         final int action = ev.getAction() & MotionEventCompat.ACTION_MASK;
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                mActivePointerId = ev.getPointerId(0);
                 mLastMotionX = ev.getX();
                 break;
 
             case MotionEvent.ACTION_MOVE: {
-                final int activePointerIndex = MotionEventCompat.findPointerIndex(ev, mActivePointerId);
-                final float x = MotionEventCompat.getX(ev, activePointerIndex);
+                final int activePointerIndex = ev.findPointerIndex(mActivePointerId);
+                final float x = ev.getX(activePointerIndex);
                 final float deltaX = x - mLastMotionX;
 
                 if (!mIsDragging) {
@@ -617,20 +616,20 @@ public class TitlePageIndicator extends View implements PageIndicator {
                 break;
 
             case MotionEventCompat.ACTION_POINTER_DOWN: {
-                final int index = MotionEventCompat.getActionIndex(ev);
-                mLastMotionX = MotionEventCompat.getX(ev, index);
-                mActivePointerId = MotionEventCompat.getPointerId(ev, index);
+                final int index = ev.getActionIndex();
+                mLastMotionX = ev.getX(index);
+                mActivePointerId = ev.getPointerId(index);
                 break;
             }
 
             case MotionEventCompat.ACTION_POINTER_UP:
-                final int pointerIndex = MotionEventCompat.getActionIndex(ev);
-                final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
+                final int pointerIndex = ev.getActionIndex();
+                final int pointerId = ev.getPointerId(pointerIndex);
                 if (pointerId == mActivePointerId) {
                     final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
-                    mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
+                    mActivePointerId = ev.getPointerId(newPointerIndex);
                 }
-                mLastMotionX = MotionEventCompat.getX(ev, MotionEventCompat.findPointerIndex(ev, mActivePointerId));
+                mLastMotionX = ev.getX(ev.findPointerIndex(mActivePointerId));
                 break;
         }
 
@@ -666,11 +665,11 @@ public class TitlePageIndicator extends View implements PageIndicator {
     /**
      * Calculate views bounds and scroll them according to the current index
      *
-     * @param paint
-     * @return
+     * @param paint the paint
+     * @return an ArrayList of Rect objects
      */
     private ArrayList<Rect> calculateAllBounds(Paint paint) {
-        ArrayList<Rect> list = new ArrayList<Rect>();
+        ArrayList<Rect> list = new ArrayList<>();
         //For each views (If no values then add a fake one)
         final int count = mViewPager.getAdapter().getCount();
         final int width = getWidth();
@@ -692,9 +691,9 @@ public class TitlePageIndicator extends View implements PageIndicator {
     /**
      * Calculate the bounds for a view's title
      *
-     * @param index
-     * @param paint
-     * @return
+     * @param index the index
+     * @param paint the paint
+     * @return a Rect object
      */
     private Rect calcBounds(int index, Paint paint) {
         //Calculate the text bounds
@@ -711,13 +710,13 @@ public class TitlePageIndicator extends View implements PageIndicator {
             return;
         }
         if (mViewPager != null) {
-            mViewPager.setOnPageChangeListener(null);
+            mViewPager.addOnPageChangeListener(null);
         }
         if (view.getAdapter() == null) {
             throw new IllegalStateException("ViewPager does not have adapter instance.");
         }
         mViewPager = view;
-        mViewPager.setOnPageChangeListener(this);
+        mViewPager.addOnPageChangeListener(this);
         invalidate();
     }
 
